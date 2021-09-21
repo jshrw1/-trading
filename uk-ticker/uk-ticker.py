@@ -1,6 +1,11 @@
 # import required packages
 import pandas as pd
 
+#update urls
+# https://www.londonstockexchange.com/reports?tab=instruments
+#https://www.londonstockexchange.com/reports?tab=equities
+
+
 # download ticker data from lse website
 df = pd.read_excel("https://bit.ly/39FLd6I", header=7, usecols="A:O")
 
