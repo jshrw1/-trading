@@ -1,17 +1,35 @@
 # import required packages
+import httplib2
 import pandas as pd
-
-#update urls
-# https://www.londonstockexchange.com/reports?tab=instruments
-#https://www.londonstockexchange.com/reports?tab=equities
+from bs4 import BeautifulSoup
 
 
-# download ticker data from lse website
-df = pd.read_excel("https://bit.ly/39FLd6I", header=7, usecols="A:O")
+# function to obtain  excel links from london stock exchange website
+def get_link(url: object):
+    http = httplib2.Http()
+    response, content = http.request(url)
 
-# noinspection SpellCheckingInspection
-tick_list = df[['TIDM', 'Issuer Name', 'Instrument Name', 'ICB Super-Sector Name', 'Trading Currency',
-                'Country of Incorporation', 'Market Sector Code']]
+    links = []
+
+    for link in BeautifulSoup(content, features="html.parser").find_all('a', href=True):
+        if '.xlsx' in link['href']:
+            links.append(link['href'])
+
+    return links[0]
+
+
+# excel links
+link1 = get_link('https://www.londonstockexchange.com/reports?tab=instruments')
+link2 = get_link('https://www.londonstockexchange.com/reports?tab=equities')
+
+# load london stock exchange instruments and ticker lists into dataframes
+_df = pd.read_excel(link1, header=7, usecols="A:O")
+_df2 = pd.read_excel(link2, header=7, usecols="B:O")
+
+# TO COMPLETE
+
+tick_list = _df[['TIDM', 'Issuer Name', 'Instrument Name', 'ICB Super-Sector Name', 'Trading Currency',
+                 'Country of Incorporation', 'Market Sector Code']]
 
 df = pd.read_excel("https://bit.ly/2QLIy2z", header=5, usecols="B:J")
 mrk_cap = df[['Company Name', 'Company Market Cap (£m)']]
