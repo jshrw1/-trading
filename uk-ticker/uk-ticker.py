@@ -5,9 +5,9 @@ from bs4 import BeautifulSoup
 
 
 # function to obtain  excel links from london stock exchange website
-def get_link(url: object):
+def get_link(web_url):
     http = httplib2.Http()
-    response, content = http.request(url)
+    response, content = http.request(web_url)
 
     links = []
 
@@ -25,7 +25,7 @@ url = get_link('https://www.londonstockexchange.com/reports?tab=instruments')
 _df = pd.read_excel(url, header=7, sheet_name='1.1 Shares', usecols="A:O")
 
 # process and clean dataset
-df = _df[['TIDM', 'Issuer Name', 'ICB Super-Sector Name', 'LSE Market', 'Market Sector Code' ]]
+df = _df[['TIDM', 'Issuer Name', 'ICB Super-Sector Name', 'LSE Market', 'Market Sector Code']]
 
 df = df.rename(columns={'TIDM': 'ticker', 'Issuer Name': 'name', 'ICB Super-Sector Name': 'industry',
                         'LSE Market': 'code', 'Market Sector Code': 'market'})
@@ -39,4 +39,12 @@ ftse250 = df
 ftse250 = ftse250.sort_values(by='ticker', ascending=True)
 ftse250 = ftse250[['ticker', 'name', 'industry']].reset_index(drop=True)
 
-ftse250.to_csv('~/PycharmProjects/-trading/uk-ticker/ticker.csv', index=False)
+# save in windows or macos
+while True:
+    try:
+        ftse250.to_csv('~\\PycharmProjects\\-trading\\uk-ticker\\ticker.csv', index=False)
+        print("Saved on Windows")
+        break
+    except ValueError:
+        ftse250.to_csv('~/PycharmProjects/-trading/uk-ticker/ticker.csv', index=False)
+        print("Saved on MacOS")
