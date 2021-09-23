@@ -19,10 +19,10 @@ def get_link(url: object):
 
 
 # excel links
-link1 = get_link('https://www.londonstockexchange.com/reports?tab=instruments')
+url = get_link('https://www.londonstockexchange.com/reports?tab=instruments')
 
 # load london stock exchange instruments and ticker lists into dataframes
-_df = pd.read_excel(link1, header=7, sheet_name='1.1 Shares', usecols="A:O")
+_df = pd.read_excel(url, header=7, sheet_name='1.1 Shares', usecols="A:O")
 
 # process and clean dataset
 df = _df[['TIDM', 'Issuer Name', 'ICB Super-Sector Name', 'Trading Currency', 'Country of Incorporation',
