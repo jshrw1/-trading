@@ -38,3 +38,5 @@ df = df.dropna().reset_index(drop=True)
 ftse250 = df
 ftse250 = ftse250.sort_values(by='ticker', ascending=True)
 ftse250 = ftse250[['ticker', 'name', 'industry']].reset_index(drop=True)
+
+ftse250.to_csv('~/PycharmProjects/-trading/uk-ticker/ticker.csv', index=False)
