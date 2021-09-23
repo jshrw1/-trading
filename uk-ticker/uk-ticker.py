@@ -25,20 +25,16 @@ url = get_link('https://www.londonstockexchange.com/reports?tab=instruments')
 _df = pd.read_excel(url, header=7, sheet_name='1.1 Shares', usecols="A:O")
 
 # process and clean dataset
-df = _df[['TIDM', 'Issuer Name', 'ICB Super-Sector Name', 'Trading Currency', 'Country of Incorporation',
-          'Security Mkt Cap (in £m)', 'LSE Market']]
+df = _df[['TIDM', 'Issuer Name', 'ICB Super-Sector Name', 'LSE Market', 'Market Sector Code' ]]
 
 df = df.rename(columns={'TIDM': 'ticker', 'Issuer Name': 'name', 'ICB Super-Sector Name': 'industry',
-                        'Trading Currency': 'currency', 'Country of Incorporation': 'country',
-                        'LSE Market': 'code', 'Security Mkt Cap (in £m)': 'cap'})
+                        'LSE Market': 'code', 'Market Sector Code': 'market'})
 
-df = df[df['currency'] == 'GBX']
 df = df[df['code'] == 'MAIN MARKET']
-df['cap'] = df['cap'].astype(float)
-df = df.sort_values(by='cap', ascending=False)
+df = df[df['market'].str.contains('F25')]
 df = df.dropna().reset_index(drop=True)
 
 # final ticker list
-ftse250 = df.iloc[100:350, :]
+ftse250 = df
 ftse250 = ftse250.sort_values(by='ticker', ascending=True)
 ftse250 = ftse250[['ticker', 'name', 'industry']].reset_index(drop=True)
