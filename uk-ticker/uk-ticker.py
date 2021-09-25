@@ -33,6 +33,7 @@ df = df.rename(columns={'TIDM': 'ticker', 'Issuer Name': 'name', 'ICB Super-Sect
 df = df[df['code'] == 'MAIN MARKET']
 df = df[df['market'].str.contains('F25')]
 df = df.dropna().reset_index(drop=True)
+df['ticker'] = df['ticker'].str.replace('.', '')
 
 # final ticker list
 ftse250 = df
@@ -40,11 +41,4 @@ ftse250 = ftse250.sort_values(by='ticker', ascending=True)
 ftse250 = ftse250[['ticker', 'name', 'industry']].reset_index(drop=True)
 
 # save in windows or macos
-while True:
-    try:
-        ftse250.to_csv('~\\PycharmProjects\\-trading\\uk-ticker\\ticker.csv', index=False)
-        print("Saved on Windows")
-        break
-    except ValueError:
-        ftse250.to_csv('~/PycharmProjects/-trading/uk-ticker/ticker.csv', index=False)
-        print("Saved on MacOS")
+ftse250.to_csv('~\\PycharmProjects\\-trading\\uk-ticker\\ticker.csv', index=False)
