@@ -1,5 +1,6 @@
 # import required packages
 import pandas as pd
+import yfinance as yf
 from time import sleep
 from random import randint
 from datetime import datetime
@@ -9,20 +10,27 @@ from dateutil.relativedelta import relativedelta
 ftse250 = pd.read_csv('~\\PycharmProjects\\-trading\\uk-ticker\\ticker.csv')
 ticker = ftse250['ticker'].tolist()
 
-# set start and end date d1 and d2
+# data download loop
+df = pd.DataFrame()
+for x in list(ticker):
+    ticker2 = (x + '.L')
+    a = yf.Ticker(x + '.L')
+    _df = a.history(period='max')
+    _df = _df.rename_axis('date').reset_index()
+    _df['date'] = _df['date'].dt.strftime('%Y%m%d')
+    _df = _df[['date', 'Close']]
+    _df['id'] = x
+    _df = _df.rename(columns={'Close': 'price'})
+    df = df.append(_df)
+    sleep(randint(0, 1))
+    print(x)
+
+# set start and end date d1 and d2 & filter datasets
 i = datetime.now()
 d2 = i.strftime('%Y%m%d')
 e = i - relativedelta(years=5)
 d1 = e.strftime('%Y%m%d')
+_filter = (df['date'] > d1) & (df['date'] <= d2)
+df = df.loc[_filter]
 
-# data download loop
-df = pd.DataFrame()
-for x in ticker:
-    url = "https://stooq.com/q/d/l/?s=" + x + ".uk&d1" + d1 + "&d2=" + d2 + "&i=d&o=0000001"
-    _df = pd.read_csv(url)
-    _df = _df[['Date', 'Close']]
-    _df['id'] = x
-    _df = _df.rename(columns={'Close': 'price', 'Date': 'date'})
-    df = df.append(_df)
-    sleep(randint(0, 1))
-    print(x)
+df.to_csv('~\\PycharmProjects\\-trading\\ftse-250-price-data-5-year.csv', index=False)
