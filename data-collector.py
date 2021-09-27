@@ -33,4 +33,9 @@ d1 = e.strftime('%Y%m%d')
 _filter = (df['date'] > d1) & (df['date'] <= d2)
 df = df.loc[_filter]
 
+# filter dataset to ensure full sample coverage
+_df = df.groupby(df['id'], as_index=False).count()
+_df = _df[_df['date'] == 1264]
+df = df[df['id'].isin(_df['id'])]
+
 df.to_csv('~\\PycharmProjects\\-trading\\ftse-250-price-data-5-year.csv', index=False)
