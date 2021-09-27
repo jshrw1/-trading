@@ -38,4 +38,4 @@ _df = df.groupby(df['id'], as_index=False).count()
 _df = _df[_df['date'] == 1264]
 df = df[df['id'].isin(_df['id'])]
 
-df.to_csv('~\\PycharmProjects\\-trading\\ftse-250-price-data-5-year.csv', index=False)
+df.to_csv('~\\PycharmProjects\\-trading\\price -data\\price-data-5-year.csv', index=False)
