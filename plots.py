@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # ftse250 data and id
-df = pd.read_csv('~\\PycharmProjects\\-trading\\ftse-250-price-data-5-year.csv')
+df = pd.read_csv('~\\PycharmProjects\\-trading\\price-data\\price-data-5-year.csv')
 ticker = df['id'].unique().tolist()
 
 # visualise the data & identify outliers.

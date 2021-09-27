@@ -17,7 +17,7 @@ for x in list(ticker):
     a = yf.Ticker(x + '.L')
     _df = a.history(period='max')
     _df = _df.rename_axis('date').reset_index()
-    _df['date'] = _df['date'].dt.strftime('%Y%m%d')
+    _df['date'] = _df['date'].dt.strftime('%Y-%m-%d')
     _df = _df[['date', 'Close']]
     _df['id'] = x
     _df = _df.rename(columns={'Close': 'price'})
@@ -27,9 +27,9 @@ for x in list(ticker):
 
 # set start and end date d1 and d2 & filter datasets
 i = datetime.now()
-d2 = i.strftime('%Y%m%d')
+d2 = i.strftime('%Y-%m-%d')
 e = i - relativedelta(years=5)
-d1 = e.strftime('%Y%m%d')
+d1 = e.strftime('%Y-%m%-d')
 _filter = (df['date'] > d1) & (df['date'] <= d2)
 df = df.loc[_filter]
 
@@ -38,4 +38,4 @@ _df = df.groupby(df['id'], as_index=False).count()
 _df = _df[_df['date'] == 1264]
 df = df[df['id'].isin(_df['id'])]
 
-df.to_csv('~\\PycharmProjects\\-trading\\price -data\\price-data-5-year.csv', index=False)
+df.to_csv('~\\PycharmProjects\\-trading\\price-data\\price-data-5-year.csv', index=False)
