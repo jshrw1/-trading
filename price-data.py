@@ -29,13 +29,13 @@ for x in list(ticker):
 i = datetime.now()
 d2 = i.strftime('%Y-%m-%d')
 e = i - relativedelta(years=5)
-d1 = e.strftime('%Y-%m%-d')
+d1 = e.strftime('%Y-%m-%d')
 _filter = (df['date'] > d1) & (df['date'] <= d2)
 df = df.loc[_filter]
 
 # filter dataset to ensure full sample coverage
 _df = df.groupby(df['id'], as_index=False).count()
-_df = _df[_df['date'] == 1264]
+_df = _df[_df['date'] == 1263]
 df = df[df['id'].isin(_df['id'])]
 
 df.to_csv('~\\PycharmProjects\\-trading\\price-data\\price-data-5-year.csv', index=False)
