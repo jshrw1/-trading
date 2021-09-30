@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # load in price data
-df = pd.read_csv('~\\PycharmProjects\\-trading\\price-data\\price-data-5-year.csv')
+df = pd.read_csv('~\\PycharmProjects\\-trading\\price-data\\price-data.csv')
 
 # format date variable to datetime format and set as index
 df['date'] = pd.to_datetime(df['date'])
